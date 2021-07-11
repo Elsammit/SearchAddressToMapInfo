@@ -9,7 +9,7 @@ import time
 import os
 
 def main():
-    args = sys.argv
+    args = sys.argv     # 実行時の引数取得
     if len(args) < 2:   # 実行時にcsvファイルを指定していなかった場合はエラーとする
         print("[Error] csvファイルを引数に与えてください")
         return
@@ -49,7 +49,7 @@ def main():
                 buf.append("latitude")          # ヘッダーの列にlatitudeを追加
                 buf.append("longitude")         # ヘッダーの列にlongitudeを追加
                 MapLists.append(buf)            # ヘッダー行をMapListsに格納
-            elif i > 0:                         # body側の各行情報
+            else:                               # body側の各行情報
                 for item in line:               # 各行ごとのカラムを取得
                     buf.append(item)            # 取得したカラムを変数に格納
                 print(line[AddressNum])
@@ -63,10 +63,8 @@ def main():
                     print("[Error] 住所の絞り込みが出来ず複数候補が出ました \n 住所の絞り込みをおこなってください　")
                     buf.append("")                                      
                     buf.append("") 
-                    continue
                 else:                                                   # レスポンスされたjsonデータが空でなかった場合
-                    print(response.json()[0]["geometry"]["coordinates"])
-                    print(response.json())    
+                    print(response.json()[0]["geometry"]["coordinates"]) 
                     buf.append(response.json()[0]["geometry"]["coordinates"][0])    # 緯度情報をbufに格納
                     buf.append(response.json()[0]["geometry"]["coordinates"][1])    # 経度情報をbufに格納
                 MapLists.append(buf)            # 各行ごとの情報をMapListsに格納                                    
