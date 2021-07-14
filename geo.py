@@ -7,6 +7,7 @@ import json         # https://note.com/masato1230/n/nba86746179ca
 import requests     # pip3 install requests
 import time
 import os
+import sqlite3
 
 def main():
     args = sys.argv     # 実行時の引数取得
