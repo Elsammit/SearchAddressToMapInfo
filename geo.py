@@ -8,6 +8,7 @@ import requests     # pip3 install requests
 import time
 import os
 import sqlite3
+import folium
 
 def main():
     args = sys.argv     # 実行時の引数取得
@@ -26,12 +27,15 @@ def main():
 
     i = 0               # ヘッダーとbody切り替え用
     AddressNum = -1     # 住所 or Addressが書かれた番号
+    locationNum = -1
+    locationName = ""
     MapLists = []       # csvから読み出しかつ緯度・経度を追加する用変数
 
     # 国土地理院URL
     # APIの使用方法等は下記を参考のこと
     # https://libraries.io/github/gsi-cyberjapan/internal-search
     makeUrl = "https://msearch.gsi.go.jp/address-search/AddressSearch?q="    
+    map = folium.Map(location=[35.681561, 139.767197], zoom_start=8)
     with open(args[1],encoding='utf-8') as f:   # 引数に与えたcsvファイル読み込み
         reader = csv.reader(f)
         for line in reader:                     # 各行読み取り
@@ -41,6 +45,8 @@ def main():
                 for item in line:               # 列読み取り
                     if item == "住所" or item == "Address" or item == "address":
                         AddressNum = j          # 住所を見つけたらその時の番号を変数に格納
+                    elif item == "店名" or item == "場所名":
+                        locationNum = j
                     j+=1                        # 列番号カウンタをインクリメント
                     buf.append(item)            # 取得した列をbufに格納
                 if AddressNum < 0:              # 住所やアドレスがなかったらエラーとして修了
@@ -68,6 +74,15 @@ def main():
                     print(response.json()[0]["geometry"]["coordinates"]) 
                     buf.append(response.json()[0]["geometry"]["coordinates"][0])    # 緯度情報をbufに格納
                     buf.append(response.json()[0]["geometry"]["coordinates"][1])    # 経度情報をbufに格納
+                    if locationNum < 0:
+                        locationName = ""
+                    else:
+                        locationName = line[locationNum]
+                    
+                    folium.Marker(location=[response.json()[0]["geometry"]["coordinates"][1], response.json()[0]["geometry"]["coordinates"][0]], popup=locationName).add_to(map)
+                    
+                map.save("result.html")
+
                 MapLists.append(buf)            # 各行ごとの情報をMapListsに格納                                    
                 time.sleep(1)                   # 国土地理院APIに負荷を掛けないように
             i+=1
