@@ -81,11 +81,12 @@ def main():
                     
                     folium.Marker(location=[response.json()[0]["geometry"]["coordinates"][1], response.json()[0]["geometry"]["coordinates"][0]], popup=locationName).add_to(map)
                     
-                map.save("result.html")
+                
 
                 MapLists.append(buf)            # 各行ごとの情報をMapListsに格納                                    
                 time.sleep(1)                   # 国土地理院APIに負荷を掛けないように
             i+=1
+    map.save("result2.html")
 
     with open("output.csv", mode='w',newline='',encoding='shift_jis') as f: # データをcsvファイルへ格納
         writer = csv.writer(f)
