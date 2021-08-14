@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+#---------------------------
+# 下記URLで取得した住所一覧から地図情報を取得
+# http://www.kabu-data.info/all_code/code_tosyo1_code.htm
+# 使用例：python scraiping.py
+# python3で実行すること
+# あらかじめスクレイピングで会社住所の一覧を取得し、Book1.csvに格納すること
+#---------------------------
+
 import urllib.request
 from bs4 import BeautifulSoup 
 import csv

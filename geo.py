@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+#---------------------------
+# csvを引数に与えるとそのcsvファイル内の住所から緯度・経度を算出
+# 使用例：python geo.py ファイル名.csv
+# python3で実行すること
+#---------------------------
+
 import csv
 import sys
 import urllib.parse # pip3 install urllib3
